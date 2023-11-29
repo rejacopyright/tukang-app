@@ -5,6 +5,6 @@ class ChatApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('CHAT PAGE'));
+    return const SafeArea(child: Center(child: Text('CHAT PAGE')));
   }
 }

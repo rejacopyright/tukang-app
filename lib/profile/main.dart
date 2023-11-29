@@ -10,7 +10,7 @@ class ProfileApp extends StatelessWidget {
         child: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text('PROFILE'),
+      Text('PROFILEs'),
       // Icon(Iconsax.profile_circle5)
     ])));
   }

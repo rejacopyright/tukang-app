@@ -3,7 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData themeConfig() {
   return ThemeData(
-    fontFamily: GoogleFonts.openSans().fontFamily,
+    fontFamily: GoogleFonts.outfit()
+        .fontFamily, // comfortaa, outfit, poiretOne, catamaran, josefinSans, dosis
     useMaterial3: true,
     primaryColor: Colors.pink,
     colorScheme: ColorScheme.fromSeed(
@@ -21,6 +22,7 @@ ThemeData themeConfig() {
       ),
       bodyMedium: TextStyle(
         fontSize: 12,
+        // fontWeight: FontWeight.w600,
       ),
       displaySmall: TextStyle(
         fontSize: 10,

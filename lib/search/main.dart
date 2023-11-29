@@ -5,6 +5,6 @@ class SearchApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(child: Text('SEARCH PAGE'));
+    return const Scaffold(body: Center(child: Text('SEARCH PAGE')));
   }
 }

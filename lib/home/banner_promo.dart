@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 // ignore: must_be_immutable
-class BannerPromo extends StatefulWidget {
-  BannerPromo({super.key, required this.onPageChange});
+class BannerPromo extends StatelessWidget {
+  BannerPromo({super.key});
+  var currentPage = 0.obs;
 
-  Function(int value) onPageChange;
-
-  @override
-  State<StatefulWidget> createState() {
-    return _BannerPromo();
-  }
-}
-
-class _BannerPromo extends State<BannerPromo> {
-  int currentPage = 0;
   final CarouselController _controller = CarouselController();
   final List<String> imgList = [
     'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
@@ -39,10 +31,7 @@ class _BannerPromo extends State<BannerPromo> {
               enlargeCenterPage: true,
               enlargeFactor: 0.15,
               onPageChanged: (index, reason) {
-                widget.onPageChange(index);
-                setState(() {
-                  currentPage = index;
-                });
+                currentPage.value = index;
               },
             ),
             items: imgList.map((item) {
@@ -68,7 +57,7 @@ class _BannerPromo extends State<BannerPromo> {
               alignment: Alignment.bottomCenter,
               child: AnimatedSmoothIndicator(
                   // controller: controller,
-                  activeIndex: currentPage,
+                  activeIndex: currentPage.value,
                   count: imgList.length,
                   effect: WormEffect(
                     dotHeight: 5,
