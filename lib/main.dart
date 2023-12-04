@@ -1,39 +1,43 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:go_router/go_router.dart';
 import 'package:woless/_config/theme.dart';
-import 'package:woless/_layouts/bottom_navigation_bar.dart';
 import 'package:woless/_routes/main.dart';
 
 void main() {
   runApp(const MyApp());
 }
 
-// class AppRouterDelegate extends GetDelegate {
-//   // GetNavConfig get prevRoute =>
-//   //     history.length < 2 ? history.last : history[history.length - 2];
+class AppRouterDelegate extends GetDelegate {
+  // final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-//   // @override
-//   // Future<GetNavConfig> popHistory() async {
-//   //   final result = prevRoute;
-//   //   Get.rootDelegate.offNamed(prevRoute.currentPage!.name);
-//   //   return result;
-//   // }
+  // @override
+  // List<NavigatorObserver>? get navigatorObservers => [routeObserver];
 
-//   @override
-//   Widget build(BuildContext context) {
-//     GlobalKey mainNavigatorKey = GlobalKey();
-//     return Navigator(
-//       key: mainNavigatorKey,
-//       onPopPage: (route, result) => route.didPop(result),
-//       pages: currentConfiguration != null
-//           ? [currentConfiguration!.currentPage!]
-//           : [GetNavConfig.fromRoute('/')!.currentPage!],
-//     );
-//   }
-// }
+  // @override
+  // PopMode get backButtonPopMode => PopMode.History;
+
+  GetNavConfig get prevRoute =>
+      history.length < 2 ? history.last : history[history.length - 2];
+
+  @override
+  Future<GetNavConfig> popHistory() async {
+    final result = prevRoute;
+    Get.rootDelegate.offNamed(prevRoute.currentPage!.name);
+    return result;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    GlobalKey mainNavigatorKey = GlobalKey();
+    return Navigator(
+      key: mainNavigatorKey,
+      onPopPage: (route, result) => route.didPop(result),
+      pages: currentConfiguration != null
+          ? [currentConfiguration!.currentPage!]
+          : [GetNavConfig.fromRoute('/')!.currentPage!],
+    );
+  }
+}
 
 // class MyBackButtonDispatcher extends RootBackButtonDispatcher {
 //   @override
@@ -52,47 +56,57 @@ void main() {
 //   }
 // }
 
-final GoRouter _router = GoRouter(
-  initialLocation: '/',
-  // routes: routes(),
-  routes: [
-    ShellRoute(
-      routes: routesGo(),
-      builder: (context, state, child) =>
-          Scaffold(body: child, bottomNavigationBar: BottomNavigationWidget()),
-    )
-  ],
-);
+// final GoRouter _router = GoRouter(
+//   initialLocation: '/',
+//   // routes: routes(),
+//   routes: [
+//     ShellRoute(
+//       routes: routesGo(),
+//       builder: (context, state, child) =>
+//           Scaffold(body: child, bottomNavigationBar: BottomNavigationWidget()),
+//     )
+//   ],
+// );
+
+final navKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp.router(
+    return GetMaterialApp(
       defaultTransition: Transition.noTransition,
+      transitionDuration: Duration.zero,
       title: 'Woless',
       theme: themeConfig(),
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
-      routerDelegate: _router.routerDelegate,
-      routeInformationParser: _router.routeInformationParser,
-      routeInformationProvider: _router.routeInformationProvider,
-      backButtonDispatcher: _router.backButtonDispatcher,
-      onDispose: () {
-        log('onDispose');
-      },
-      // routerDelegate: AppRouterDelegate(),
+      getPages: routes(),
+      // home: const Scaffold(bottomNavigationBar: BottomNavigationWidget()),
+      // routerDelegate: Get.rootDelegate,
+      // routerDelegate: _router.routerDelegate,
+      // routeInformationParser: _router.routeInformationParser,
+      // routeInformationProvider: _router.routeInformationProvider,
+      // backButtonDispatcher: _router.backButtonDispatcher,
       // backButtonDispatcher: MyBackButtonDispatcher(),
-      // getPages: routes(),
-      // builder: (context, state) => GetRouterOutlet.builder(
-      //   builder: (context, delegate, currentRoute) {
+      // navigatorKey: Get.key,
+      // builder: (ctxParent, state) => GetRouterOutlet.builder(
+      //   routerDelegate: Get.rootDelegate,
+      //   key: navKey,
+      //   builder: (ctx, delegate, currentRoute) {
+      //     // log('${currentRoute!.currentPage}');
       //     return Scaffold(
       //         body: GetRouterOutlet(
+      //           navigatorKey: delegate.navigatorKey,
+      //           delegate: delegate,
       //           initialRoute: '/',
       //           anchorRoute: '/',
+      //           // filterPages: (afterAnchor) {
+      //           //   return afterAnchor.take(1);
+      //           // },
       //         ),
-      //         bottomNavigationBar: BottomNavigationWidget());
+      //         bottomNavigationBar: BottomNavigationWidget(delegate: delegate));
       //   },
       // ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 // import 'package:iconsax/iconsax.dart';
 
 class ProfileApp extends StatelessWidget {
@@ -6,11 +7,17 @@ class ProfileApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
+    return SafeArea(
         child: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-      Text('PROFILEs'),
+      const Text('PROFILEs'),
+      ElevatedButton(
+          onPressed: () {
+            Get.reload();
+            // log('${Get.rootDelegate.history.last}');
+          },
+          child: const Text('Refresh')),
       // Icon(Iconsax.profile_circle5)
     ])));
   }
