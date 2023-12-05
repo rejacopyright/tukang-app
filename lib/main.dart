@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woless/_config/theme.dart';
+import 'package:woless/_layouts/bottom_navigation_bar.dart';
 import 'package:woless/_routes/main.dart';
 
 void main() {
@@ -70,9 +71,15 @@ class AppRouterDelegate extends GetDelegate {
 
 final navKey = GlobalKey<NavigatorState>();
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  String currentPagName = '/';
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -83,7 +90,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
       getPages: routes(),
-      // home: const Scaffold(bottomNavigationBar: BottomNavigationWidget()),
+      // builder: (ctxParent, state) => Scaffold(
+      //   body: GetRouterOutlet(initialRoute: '/'),
+      //   bottomNavigationBar: const BottomNavigationWidget(),
+      // ),
       // routerDelegate: Get.rootDelegate,
       // routerDelegate: _router.routerDelegate,
       // routeInformationParser: _router.routeInformationParser,
@@ -91,24 +101,25 @@ class MyApp extends StatelessWidget {
       // backButtonDispatcher: _router.backButtonDispatcher,
       // backButtonDispatcher: MyBackButtonDispatcher(),
       // navigatorKey: Get.key,
-      // builder: (ctxParent, state) => GetRouterOutlet.builder(
-      //   routerDelegate: Get.rootDelegate,
-      //   key: navKey,
-      //   builder: (ctx, delegate, currentRoute) {
-      //     // log('${currentRoute!.currentPage}');
-      //     return Scaffold(
-      //         body: GetRouterOutlet(
-      //           navigatorKey: delegate.navigatorKey,
-      //           delegate: delegate,
-      //           initialRoute: '/',
-      //           anchorRoute: '/',
-      //           // filterPages: (afterAnchor) {
-      //           //   return afterAnchor.take(1);
-      //           // },
-      //         ),
-      //         bottomNavigationBar: BottomNavigationWidget(delegate: delegate));
-      //   },
-      // ),
+      builder: (ctxParent, state) => GetRouterOutlet.builder(
+        routerDelegate: Get.rootDelegate,
+        key: navKey,
+        builder: (ctx, delegate, currentRoute) {
+          final String name =
+              currentRoute != null ? currentRoute.currentPage!.name : '/';
+          return Scaffold(
+              body: GetRouterOutlet(
+                navigatorKey: delegate.navigatorKey,
+                delegate: delegate,
+                initialRoute: '/',
+                anchorRoute: '/',
+                // filterPages: (afterAnchor) {
+                //   return afterAnchor.take(1);
+                // },
+              ),
+              bottomNavigationBar: BottomNavigationWidget(name: name));
+        },
+      ),
     );
   }
 }

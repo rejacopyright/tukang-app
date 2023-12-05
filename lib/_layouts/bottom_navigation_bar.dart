@@ -18,12 +18,14 @@ class BottomNavigationWidget extends StatelessWidget {
             children: menusNav
                 .map((menu) => Expanded(
                     child: InkWell(
-                        // splashFactory: NoSplash.splashFactory,
+                        splashFactory: NoSplash.splashFactory,
                         // hoverDuration: const Duration(milliseconds: 0),
                         // enableFeedback: false,
                         highlightColor: Colors.transparent,
                         onTap: () {
-                          Get.toNamed(menu.name);
+                          Future.delayed(const Duration(milliseconds: 1), () {
+                            Get.rootDelegate.toNamed(menu.name);
+                          });
                         },
                         // onTapDown: (e) {
                         //   data.setActivePage(menu.name);
