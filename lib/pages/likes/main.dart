@@ -1,7 +1,7 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:woless/_widgets/button.dart';
 import 'package:woless/_widgets/loader.dart';
 import 'package:woless/pages/chat/card_list.dart';
 
@@ -51,10 +51,17 @@ class LikesPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsetsDirectional.symmetric(
-            horizontal: 0, vertical: searchPadding),
-        child: ListView(
-            children: List.generate(
-                1, (index) => ChatCard(dummyIndex: Random().nextInt(6) + 1))));
+      padding: EdgeInsetsDirectional.symmetric(
+          horizontal: 0, vertical: searchPadding),
+      child: ListView(
+        children: List.generate(
+          2,
+          (index) => LinkWell(
+            to: '/chat/detail',
+            child: ChatCard(dummyIndex: Random().nextInt(6) + 1),
+          ),
+        ),
+      ),
+    );
   }
 }

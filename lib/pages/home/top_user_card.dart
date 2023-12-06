@@ -60,8 +60,14 @@ class TopUserCard extends StatelessWidget {
                       // ),
                       child: InkWell(
                           // splashFactory: NoSplash.splashFactory,
+                          splashFactory: InkSplash.splashFactory,
                           highlightColor: Colors.transparent,
-                          onTap: () {},
+                          onTap: () {
+                            Future.delayed(const Duration(milliseconds: 200),
+                                () {
+                              Get.rootDelegate.toNamed('/app/coba');
+                            });
+                          },
                           child: StackedUserCard(avatar: e)),
                     ),
                   ),

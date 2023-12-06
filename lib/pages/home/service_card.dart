@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:woless/_config/services.dart';
 
 class ServiceCard extends StatelessWidget {
   const ServiceCard({super.key, required this.label, this.icon});
@@ -13,7 +14,7 @@ class ServiceCard extends StatelessWidget {
       splashFactory: NoSplash.splashFactory,
       highlightColor: Colors.transparent,
       onTap: () {
-        Get.toNamed('profile');
+        Get.rootDelegate.toNamed('/app/profile');
       },
       // child: Stack(
       //   clipBehavior: Clip.none,
@@ -67,5 +68,63 @@ class ServiceCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class ServiceSectionController extends GetxController {
+  RxBool loadingPage = false.obs;
+
+  @override
+  void onReady() {
+    loadingPage.value = true;
+    super.onReady();
+  }
+}
+
+class ServiceSection extends StatelessWidget {
+  const ServiceSection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final store = Get.put(ServiceSectionController());
+    return Obx(() {
+      final pageIsReady = store.loadingPage.value;
+      if (pageIsReady) {
+        return GridView.count(
+          restorationId: 'home_menu',
+          crossAxisCount: 6,
+          padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 5),
+          physics: const NeverScrollableScrollPhysics(),
+          // childAspectRatio: 0.9,
+          shrinkWrap: true,
+          // controller:
+          //     ScrollController(keepScrollOffset: false),
+          scrollDirection: Axis.vertical,
+          crossAxisSpacing: 0,
+          mainAxisSpacing: 10,
+          children: servicesList
+              .where((item) => item.home == true)
+              .map((e) => ServiceCard(label: e.label, icon: e.icon))
+              .toList(),
+        );
+      }
+      return Container(
+        margin: const EdgeInsets.symmetric(horizontal: 10),
+        child: Row(
+          children: List.generate(
+            4,
+            (index) => Container(
+              width: (MediaQuery.of(context).size.width / 4) - 15,
+              height: 50,
+              margin: const EdgeInsets.symmetric(horizontal: 5),
+              decoration: BoxDecoration(
+                color: Colors.black.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(7.5),
+              ),
+            ),
+          ),
+        ),
+      );
+    });
   }
 }
