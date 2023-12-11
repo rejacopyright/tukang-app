@@ -23,7 +23,7 @@ class TitleShowAll extends StatelessWidget {
               title ?? 'Title',
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 16,
+                fontSize: 15,
               ),
             ),
             InkWell(

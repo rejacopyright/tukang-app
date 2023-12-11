@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 
 class AppRouterDelegate extends GetDelegate {
@@ -33,22 +34,21 @@ class AppRouterDelegate extends GetDelegate {
   }
 }
 
-// class MyBackButtonDispatcher extends RootBackButtonDispatcher {
-//   @override
-//   Future<bool> didPopRoute() async {
-//     if ((Get.rootDelegate.currentConfiguration?.currentTreeBranch.length ??
-//             2) <=
-//         1) {
-//       try {
-//         SystemNavigator.pop();
-//       } catch (e) {
-//         log('$e');
-//         log('no');
-//       }
-//     }
-//     return super.didPopRoute();
-//   }
-// }
+class MyBackButtonDispatcher extends RootBackButtonDispatcher {
+  @override
+  Future<bool> didPopRoute() async {
+    if ((Get.rootDelegate.currentConfiguration?.currentTreeBranch.length ??
+            2) <=
+        1) {
+      try {
+        SystemNavigator.pop();
+      } catch (e) {
+        // log
+      }
+    }
+    return super.didPopRoute();
+  }
+}
 
 // final GoRouter _router = GoRouter(
 //   initialLocation: '/',

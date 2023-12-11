@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woless/_config/services.dart';
+import 'package:woless/pages/home/main.dart';
 
 class ServiceCard extends StatelessWidget {
   const ServiceCard({super.key, required this.label, this.icon});
@@ -16,31 +17,6 @@ class ServiceCard extends StatelessWidget {
       onTap: () {
         Get.rootDelegate.toNamed('/app/profile');
       },
-      // child: Stack(
-      //   clipBehavior: Clip.none,
-      //   alignment: AlignmentDirectional.center,
-      //   fit: StackFit.loose,
-      //   children: [
-      //     Container(
-      //       width: 40,
-      //       padding: const EdgeInsets.all(5),
-      //       margin: const EdgeInsets.symmetric(vertical: 10),
-      //       decoration: BoxDecoration(
-      //           color: primary.withOpacity(0.035),
-      //           borderRadius: BorderRadius.circular(12.5),
-      //           border: Border.all(color: primary.withOpacity(0.175))),
-      //       child: Image.asset(icon ?? 'logo.png'),
-      //     ),
-      //     Positioned(
-      //         width: MediaQuery.of(context).size.width / 6,
-      //         top: 50,
-      //         child: Text(
-      //           label,
-      //           textAlign: TextAlign.center,
-      //           style: const TextStyle(fontSize: 10),
-      //         )),
-      //   ],
-      // ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -71,15 +47,7 @@ class ServiceCard extends StatelessWidget {
   }
 }
 
-class ServiceSectionController extends GetxController {
-  RxBool loadingPage = false.obs;
-
-  @override
-  void onReady() {
-    loadingPage.value = true;
-    super.onReady();
-  }
-}
+class ServiceSectionController extends HomepageController {}
 
 class ServiceSection extends StatelessWidget {
   const ServiceSection({super.key});

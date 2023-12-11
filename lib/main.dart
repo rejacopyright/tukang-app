@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woless/_config/theme.dart';
+import 'package:woless/_controller/bottom_navgation_bar_controller.dart';
 import 'package:woless/_layouts/bottom_navigation_bar.dart';
 import 'package:woless/_routes/main.dart';
 
@@ -29,6 +30,7 @@ class _MyAppState extends State<MyApp> {
       theme: themeConfig(),
       debugShowCheckedModeBanner: false,
       showPerformanceOverlay: false,
+      opaqueRoute: true,
       getPages: routes(),
       // routerDelegate: Get.rootDelegate,
       // routerDelegate: _router.routerDelegate,
@@ -36,24 +38,32 @@ class _MyAppState extends State<MyApp> {
       // routeInformationProvider: _router.routeInformationProvider,
       // backButtonDispatcher: _router.backButtonDispatcher,
       // navigatorKey: Get.key,
+      // backButtonDispatcher: MyBackButtonDispatcher(),
       builder: (ctxParent, state) => GetRouterOutlet.builder(
         routerDelegate: Get.rootDelegate,
         key: navKey,
         builder: (ctx, delegate, currentRoute) {
           final String name =
-              currentRoute != null ? currentRoute.currentPage!.name : '/app';
+              currentRoute != null ? currentRoute.currentPage!.name : homeRoute;
+          final navController = Get.put(BottomNavStore());
           return Scaffold(
               body: GetRouterOutlet(
                 navigatorKey: delegate.navigatorKey,
                 delegate: delegate,
-                initialRoute: '/app',
+                initialRoute: homeRoute,
                 anchorRoute: '/',
                 // filterPages: (afterAnchor) {
                 //   return afterAnchor.take(1);
                 // },
               ),
-              bottomNavigationBar: BottomNavigationWidget(
-                  name: name != '/app' ? name.replaceAll('/app', '') : name));
+              bottomNavigationBar:
+                  pageHasNav.contains(name) || navController.nav.value
+                      ? BottomNavigationWidget(
+                          name: name != homeRoute
+                              ? name.replaceAll(homeRoute, '')
+                              : name,
+                        )
+                      : const SizedBox.shrink());
         },
       ),
     );

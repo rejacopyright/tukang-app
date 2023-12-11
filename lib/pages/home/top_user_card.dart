@@ -1,16 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:woless/_widgets/user_card.dart';
+import 'package:woless/pages/home/main.dart';
 
-class TopUserCardController extends GetxController {
-  RxBool loadingPage = false.obs;
-
-  @override
-  void onReady() {
-    loadingPage.value = true;
-    super.onReady();
-  }
-}
+class TopUserCardController extends HomepageController {}
 
 class TopUserCard extends StatelessWidget {
   TopUserCard({super.key});
@@ -25,9 +18,9 @@ class TopUserCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final store = Get.put(TopUserCardController());
+    final topUserController = Get.put(TopUserCardController());
     return Obx(() {
-      final pageIsReady = store.loadingPage.value;
+      final pageIsReady = topUserController.loadingPage.value;
       if (pageIsReady) {
         return Container(
           constraints: const BoxConstraints(maxHeight: 145),
@@ -59,16 +52,7 @@ class TopUserCard extends StatelessWidget {
                       //   ],
                       // ),
                       child: InkWell(
-                          // splashFactory: NoSplash.splashFactory,
-                          splashFactory: InkSplash.splashFactory,
-                          highlightColor: Colors.transparent,
-                          onTap: () {
-                            Future.delayed(const Duration(milliseconds: 200),
-                                () {
-                              Get.rootDelegate.toNamed('/app/coba');
-                            });
-                          },
-                          child: StackedUserCard(avatar: e)),
+                          onTap: () {}, child: StackedUserCard(avatar: e)),
                     ),
                   ),
                 )

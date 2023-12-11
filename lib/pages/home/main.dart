@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:woless/_widgets/title_show_all.dart';
 import 'package:woless/pages/home/banner_promo.dart';
 import 'package:woless/pages/home/header.dart';
+import 'package:woless/pages/home/post_card.dart';
 import 'package:woless/pages/home/service_card.dart';
 import 'package:woless/pages/home/top_user_card.dart';
 
@@ -11,11 +12,7 @@ class HomeApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final store = Get.put(HomeController());
-    const double expandedHeight = 150.0;
-    const double toolbarHeight = 0.0;
-    return const Homepage(
-        expandedHeight: expandedHeight, toolbarHeight: toolbarHeight);
+    return const Homepage();
   }
 }
 
@@ -42,62 +39,69 @@ class HomepageController extends GetxController {
     loadingPage.value = true;
     super.onReady();
   }
+
+  @override
+  void refresh() {
+    loadingPage.value = false;
+    Future.delayed(const Duration(milliseconds: 400), () {
+      onReady();
+    });
+    super.refresh();
+  }
 }
 
 class Homepage extends StatelessWidget {
-  const Homepage({
-    super.key,
-    required this.expandedHeight,
-    required this.toolbarHeight,
-  });
-
-  final double expandedHeight;
-  final double toolbarHeight;
+  const Homepage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final store = Get.put(HomepageController());
+    final homeController = Get.put(HomepageController());
+    final topUserController = Get.put(TopUserCardController());
+    final serviceController = Get.put(ServiceSectionController());
+    final bannerController = Get.put(BannerPromoController());
+    final postController = Get.put(PostSectionController());
     return Obx(() {
-      final pageIsReady = store.loadingPage.value;
-      return CustomScrollView(
-        // physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverLayoutBuilder(
-              builder: (BuildContext context, sliverConstraints) {
-            // final bool isCollapsed =
-            //     sliverConstraints.scrollOffset + toolbarHeight >
-            //         expandedHeight;
-            // final Brightness statusBarColor =
-            //     isCollapsed ? Brightness.dark : Brightness.light;
-            return SliverAppBar(
-              pinned: true,
-              snap: false,
-              floating: false,
-              stretch: false,
-              expandedHeight: expandedHeight,
-              collapsedHeight: toolbarHeight,
-              toolbarHeight: toolbarHeight,
-              surfaceTintColor: Colors.transparent,
-              centerTitle: false,
-              // systemOverlayStyle: SystemUiOverlayStyle(
-              //   statusBarColor:
-              //       isCollapsed ? Colors.white : Colors.transparent,
-              //   systemStatusBarContrastEnforced: true,
-              //   statusBarIconBrightness: statusBarColor, // Android
-              //   statusBarBrightness: statusBarColor, // IOS
-              // ),
-              flexibleSpace: HomeHeader(pageIsReady: pageIsReady),
-            );
-          }),
-          SliverList(
-            delegate: SliverChildBuilderDelegate(
-              (BuildContext context, int index) {
-                return Column(children: content);
-              },
-              childCount: 1,
+      final pageIsReady = homeController.loadingPage.value;
+      return NestedScrollView(
+        floatHeaderSlivers: true,
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return [HomeHeader(pageIsReady: pageIsReady)];
+        },
+        body: RefreshIndicator(
+          color: Theme.of(context).primaryColor,
+          displacement: 30,
+          onRefresh: () async {
+            bannerController.refresh();
+            serviceController.refresh();
+            topUserController.refresh();
+            postController.refresh();
+          },
+          child: CustomScrollView(
+            physics: const BouncingScrollPhysics(),
+            scrollBehavior: const MaterialScrollBehavior().copyWith(
+              overscroll: false,
             ),
+            slivers: [
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return Column(children: content);
+                  },
+                  childCount: 1,
+                ),
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) => Container(
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: const PostSection(),
+                  ),
+                  childCount: 1,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       );
     });
   }

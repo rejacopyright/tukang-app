@@ -4,16 +4,16 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:woless/pages/chat/detail/main.dart';
 import 'package:woless/pages/chat/main.dart';
-import 'package:woless/pages/home/coba.dart';
 import 'package:woless/pages/home/main.dart';
 import 'package:woless/pages/likes/main.dart';
+import 'package:woless/pages/product/detail/main.dart';
+import 'package:woless/pages/product/main.dart';
 import 'package:woless/pages/profile/main.dart';
 import 'package:woless/pages/search/main.dart';
 
 // class PageMiddelware extends GetMiddleware {
 //   @override
 //   void onPageDispose() {
-//     // log('onPageDispose');
 //     super.onPageDispose();
 //   }
 
@@ -28,6 +28,8 @@ import 'package:woless/pages/search/main.dart';
 //     return super.onPageCalled(page);
 //   }
 // }
+
+const String homeRoute = '/app';
 
 class Scoper extends StatelessWidget {
   const Scoper({
@@ -46,19 +48,21 @@ class Scoper extends StatelessWidget {
         final history = Get.rootDelegate.history;
         // final prevRoute = history.length < 2
         //     ? history.last.currentTreeBranch.firstOrNull!.name
+        //     // ? history.last.currentPage!.name
         //     : history[history.length - 2].currentPage!.name;
 
         final bool isNavMenu = menusNav.map((m) => m.name).contains(name);
 
-        if (!['/', '/app'].contains(name)) {
+        if (!['/', homeRoute].contains(name)) {
           if (!isNavMenu) {
-            history.length < 2
-                ? Get.rootDelegate.offNamed('/app')
-                : Get.rootDelegate.popRoute(popMode: PopMode.History);
+            history.isEmpty
+                ? Get.rootDelegate.offNamed(homeRoute)
+                // : Get.rootDelegate.offNamed(prevRoute);
+                : Get.rootDelegate.popRoute(popMode: PopMode.Page);
             // : Get.rootDelegate
             //     .backUntil(prevRoute, popMode: PopMode.History);
           } else if (isNavMenu) {
-            Get.rootDelegate.offNamed('/app');
+            Get.rootDelegate.offNamed(homeRoute);
           }
         }
       },
@@ -89,79 +93,102 @@ class Route {
 
 List<Route> menusNav = [
   Route(
-    name: '/app',
-    page: const Scoper(name: '/app', child: HomeApp()),
-    // middlewares: [PageMiddelware()],
+    name: homeRoute,
+    page: const Scoper(name: homeRoute, child: HomeApp()),
     label: 'Beranda',
     icon: Iconsax.home_2,
     activeIcon: Iconsax.home_25,
     children: [
       GetPage(
-        name: '/coba',
-        page: () => const HomeCoba(),
+        name: '/home/product/detail',
+        page: () => const ProductDetail(),
       ),
     ],
   ),
   Route(
     name: '/search',
     page: const Scoper(name: '/search', child: SearchApp()),
-    // middlewares: [PageMiddelware()],
-    label: 'Pencarian',
+    label: 'Temukan',
     icon: Iconsax.search_normal_1,
     activeIcon: Iconsax.search_normal_1,
   ),
   Route(
+    name: '/product',
+    page: const Scoper(name: '/product', child: ProductApp()),
+    label: 'Disukai',
+    icon: Iconsax.heart,
+    activeIcon: Iconsax.heart5,
+    children: [
+      GetPage(
+        name: '/detail',
+        preventDuplicates: true,
+        participatesInRootNavigator: true,
+        page: () => const ProductDetail(),
+      ),
+    ],
+  ),
+  Route(
     name: '/chat',
     page: const Scoper(name: '/chat', child: ChatApp()),
-    // middlewares: [PageMiddelware()],
     label: 'Pesan',
     icon: Iconsax.message,
     activeIcon: Iconsax.message5,
     children: [
       GetPage(
         name: '/detail',
+        preventDuplicates: true,
+        participatesInRootNavigator: true,
         page: () => const ChatDetail(),
       ),
     ],
   ),
   Route(
-    name: '/likes',
-    page: const Scoper(name: '/likes', child: LikesApp()),
-    // middlewares: [PageMiddelware()],
-    label: 'Disukai',
-    icon: Iconsax.heart,
-    activeIcon: Iconsax.heart5,
-  ),
-  Route(
     name: '/profile',
     page: const Scoper(name: '/profile', child: ProfileApp()),
-    // middlewares: [PageMiddelware()],
     label: 'Akun',
     icon: Iconsax.profile_circle,
     activeIcon: Iconsax.profile_circle5,
   ),
 ];
 
+List<String> pageHasNav = [
+  '/likes',
+  ...(menusNav.map((e) => e.name)),
+].map((e) => e != homeRoute ? '$homeRoute$e' : e).toList();
+
 List<GetPage> routes() {
   return [
     GetPage(
       name: '/',
+      preventDuplicates: true,
+      participatesInRootNavigator: true,
       page: () => const Scoper(name: '/', child: HomeApp()),
       children: [
         GetPage(
-          name: '/app',
-          page: () => const Scoper(name: '/app', child: HomeApp()),
+          name: homeRoute,
+          preventDuplicates: true,
+          participatesInRootNavigator: true,
+          page: () => const Scoper(name: homeRoute, child: HomeApp()),
           children: [
-            ...(menusNav.firstWhereOrNull((e) => e.name == '/app')!.children ??
+            ...(menusNav
+                    .firstWhereOrNull((e) => e.name == homeRoute)!
+                    .children ??
                 []),
-            ...menusNav.where((e) => e.name != '/app').map((e) => GetPage(
+            ...menusNav.where((e) => e.name != homeRoute).map((e) => GetPage(
                   name: e.name,
+                  preventDuplicates: true,
+                  participatesInRootNavigator: true,
                   page: () => e.page,
                   // middlewares: e.middlewares,
-                  // preventDuplicates: false,
-                  // participatesInRootNavigator: true,
                   children: e.children ?? [],
                 )),
+            GetPage(
+              name: '/likes',
+              preventDuplicates: true,
+              participatesInRootNavigator: true,
+              page: () => const Scoper(name: '/likes', child: LikesApp()),
+              // middlewares: [PageMiddelware()],
+            ),
           ],
         ),
       ],

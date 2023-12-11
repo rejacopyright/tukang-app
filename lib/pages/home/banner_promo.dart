@@ -2,18 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:get/get.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:woless/pages/home/main.dart';
 
-class BannerPromoController extends GetxController {
-  RxBool loadingPage = false.obs;
+class BannerPromoController extends HomepageController {
   RxInt currentPage = 0.obs;
   setCurrenPage(val) {
     currentPage.value = val;
-  }
-
-  @override
-  void onReady() {
-    loadingPage.value = true;
-    super.onReady();
   }
 }
 

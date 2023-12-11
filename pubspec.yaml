@@ -15,6 +15,8 @@ dependencies:
  iconsax: ^0.0.8
  get: ^4.6.6
  flutter_rating_bar: ^4.0.1
+ intl: ^0.18.1
+ flutter_html: ^3.0.0-beta.2
 
 flutter_launcher_icons:
  android: 'launcher_icon'
@@ -42,6 +44,7 @@ flutter:
  uses-material-design: true
  assets:
   - assets/images/ # https://flutter.dev/assets-and-images/#resolution-aware
+  - assets/images/sample/
   - assets/icons/
   - assets/avatar/
  # fonts:

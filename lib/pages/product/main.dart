@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:woless/_widgets/form.dart';
 
-class SearchApp extends StatelessWidget {
-  const SearchApp({super.key});
+class ProductApp extends StatelessWidget {
+  const ProductApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +28,8 @@ class SearchApp extends StatelessWidget {
           ),
           SliverList(
             delegate: SliverChildBuilderDelegate((context, index) {
-              return Column(
-                children: List.generate(
-                  10,
-                  (index) => const SizedBox(
-                    height: 100,
-                    child: Center(child: Text('OK')),
-                  ),
-                ).toList(),
+              return const Center(
+                child: Text('Product App'),
               );
             }, childCount: 1),
           ),

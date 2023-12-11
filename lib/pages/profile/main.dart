@@ -23,7 +23,6 @@ class ProfileApp extends StatelessWidget {
             ElevatedButton(
                 onPressed: () {
                   Get.reload();
-                  // log('${Get.rootDelegate.history.last}');
                 },
                 child: const Text('Refresh')),
             // Icon(Iconsax.profile_circle5)

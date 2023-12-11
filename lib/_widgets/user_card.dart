@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:woless/_config/services.dart';
+import 'package:woless/_widgets/button.dart';
 
 class UserCard extends StatelessWidget {
   const UserCard({super.key, this.description, this.label});
@@ -125,6 +126,105 @@ class StackedUserCard extends StatelessWidget {
           ),
         )
       ],
+    );
+  }
+}
+
+class UserReview extends StatelessWidget {
+  UserReview({
+    super.key,
+    this.avatar,
+  });
+
+  final String? avatar;
+  final double rate = Random().nextInt(5) + 1;
+
+  @override
+  Widget build(BuildContext context) {
+    return LinkWell(
+      to: '',
+      child: Container(
+        padding: const EdgeInsets.all(5),
+        margin: const EdgeInsets.only(bottom: 5),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: 25,
+                  height: 25,
+                  margin: const EdgeInsets.only(right: 5),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(50),
+                  ),
+                  child: Image.asset(
+                    avatar ?? 'assets/avatar/user.png',
+                    fit: BoxFit.cover,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Padding(
+                        padding: EdgeInsets.only(left: 2, bottom: 5),
+                        child: Text(
+                          'Reja Jamil',
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Expanded(
+                            child: Wrap(
+                              crossAxisAlignment: WrapCrossAlignment.center,
+                              spacing: 5,
+                              children: [
+                                RatingBarIndicator(
+                                  rating: rate,
+                                  unratedColor: const Color(0xffdddddd),
+                                  itemBuilder: (context, index) => const Icon(
+                                    Icons.star,
+                                    color: Colors.amber,
+                                  ),
+                                  itemCount: 5,
+                                  itemSize: 12,
+                                  direction: Axis.horizontal,
+                                ),
+                                Text(
+                                  rate.toString(),
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Text(
+                            '${rate.toInt().toString()} jam yang lalu',
+                            style: TextStyle(
+                              fontSize: 11,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black.withOpacity(0.5),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            const Padding(padding: EdgeInsets.only(top: 5)),
+            const Text(
+                'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consequatur ut nihil neque labore totam perferendis.'),
+          ],
+        ),
+      ),
     );
   }
 }

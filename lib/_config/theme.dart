@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 
 ThemeData themeConfig() {
   return ThemeData(
+    // primarySwatch: Colors.blueGrey,
+    scaffoldBackgroundColor: Colors.white,
     fontFamily: GoogleFonts.comfortaa()
         .fontFamily, // comfortaa, outfit, poiretOne, catamaran, josefinSans, dosis
     useMaterial3: true,
@@ -10,6 +12,9 @@ ThemeData themeConfig() {
     colorScheme: ColorScheme.fromSeed(
       seedColor: const Color(0xffff5000),
       // brightness: Brightness.dark,
+    ),
+    cardTheme: const CardTheme(
+      color: Colors.white,
     ),
     textTheme: const TextTheme(
       displayLarge: TextStyle(
